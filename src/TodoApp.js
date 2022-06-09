@@ -44,10 +44,26 @@ export const TodoApp = () => {
     setTodos(deleteTodos);
   }
 
+  const handleAdd = (todo) => {
+    console.log(todo);
+    
+    const newTodo = {
+      id: Date.now(),
+      ...todo,
+      done: false
+    }
+
+    const changedTodos = [
+      newTodo,
+      ...todos
+    ]
+
+    setTodos(changedTodos)
+  }
 
   return (
     <div className='m-5'>
-      <h1 className='text-3xl font-bold text-center text-green-500 mb-3'>TODO APP</h1>
+      <h1 className='text-4xl font-bold text-center text-green-500 mb-3'>TODO APP</h1>
       <hr />
       <div className='grid grid-cols-2 gap-5'>
         <TodoList
@@ -55,7 +71,7 @@ export const TodoApp = () => {
           handleDelete={handleDelete}
           handleDone={handleDone}
         />
-        <TodoAdd />
+        <TodoAdd handleAdd={handleAdd}/>
       </div>
     </div>
   )

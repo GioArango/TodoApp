@@ -5,7 +5,7 @@ export const TodoList = ( {todos, handleDelete, handleDone} ) => {
 
   return (
     <div>
-      <h1>Total Todos: {todos.length} ~ Completed Todos: {todos.filter( todo => todo.done).length}</h1>
+      <h1 className='text-xl'>Total Todos: {todos.length} ~ Completed Todos: {todos.filter( todo => todo.done).length}</h1>
       <hr />
       {
         todos.map( todo => (
