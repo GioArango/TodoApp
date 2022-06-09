@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const newTodo = {
   title: '',
   desc: ''
 }
 
-export const TodoAdd = ({ handleAdd }) => {
-
+export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
+  // console.log('Add ', todoEdit)
   const [formValues, setFormValues] = useState(newTodo);
+  const { title, desc } = formValues;
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const { title, desc } = formValues;
+
+  useEffect(() => {
+    if (todoEdit) {
+      setFormValues(todoEdit);
+    } else {
+      setFormValues(newTodo);
+    }
+  }, [todoEdit])
+
 
   const handleInputChange = (e) => {
 
@@ -20,8 +30,8 @@ export const TodoAdd = ({ handleAdd }) => {
     }
     setFormValues(todo);
 
-    ( title && setError(null) )
-    
+    (title && setError(null))
+
   }
 
   const handleSubmit = (e) => {
@@ -32,9 +42,15 @@ export const TodoAdd = ({ handleAdd }) => {
       return;
     }
 
-    handleAdd(formValues);
+    if(todoEdit) {
+      handleEdit(formValues);
+      setTodoEdit(null);
+    }else{
+      handleAdd(formValues);
+    }
+
     setFormValues(newTodo);
-    setSuccess('Task added!');
+    setSuccess(todoEdit ? 'Task edited!' : 'Task added');
 
     setTimeout(() => {
       setSuccess(null);
@@ -44,9 +60,16 @@ export const TodoAdd = ({ handleAdd }) => {
 
   }
 
+  const handleCancel = () => {
+    setTodoEdit(null);
+    setFormValues(newTodo);
+  }
+
   return (
     <div>
-      <h1 className='text-xl'>Add Todo</h1>
+      <h1 className='text-xl text-stone-600'>
+        {todoEdit ? 'Edit' : 'Add'} Todo
+      </h1>
       <hr />
 
       <form onSubmit={handleSubmit} className='mt-2'>
@@ -74,23 +97,37 @@ export const TodoAdd = ({ handleAdd }) => {
             />
           </div>
         </div>
-        <div className='mt-2 flex justify-end'>
+        <div className='mt-2 flex justify-end space-x-1.5'>
+
+          {
+            (todoEdit)
+            &&
+            <button
+              type='button'
+              className='bg-orange-500 hover:bg-orange-300 text-white font-bold py-2 px-4 rounded md:w-3/12'
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          }
+
           <button
             type='submit'
-            className={`bg-green-500 hover:bg-green-300 text-white font-bold py-2 px-4 rounded md:w-3/12`}
+            className={`bg-${(todoEdit ? 'blue' : 'green')}-500 hover:bg-${(todoEdit ? 'blue' : 'green')}-300 text-white font-bold py-2 px-4 rounded md:w-3/12`}
           >
-            Add Task
+            {todoEdit ? 'Edit' : 'Add'} Task
           </button>
+
         </div>
       </form>
       {
         (success)
-          && <div className='bg-green-300 text-green-900 text-center text-base mt-3 p-2 rounded'>{success}</div>          
+        && <div className='bg-green-300 text-green-900 text-center text-base mt-3 p-2 rounded'>{success}</div>
       }
 
       {
         (error)
-          && <div className='bg-red-300 text-red-900 text-center text-base mt-3 p-2 rounded'>{error}</div>
+        && <div className='bg-red-300 text-red-900 text-center text-base mt-3 p-2 rounded'>{error}</div>
       }
 
     </div>

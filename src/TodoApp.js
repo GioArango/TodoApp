@@ -2,43 +2,29 @@ import React, { useState } from 'react';
 import { TodoAdd } from './components/TodoAdd/TodoAdd';
 import { TodoList } from './components/TodoList/TodoList';
 
-const initialTodos = [
-  {
-    id: 1,
-    title: 'Tarea 1',
-    desc: 'Aprender React',
-    done: false
-  },
-  {
-    id: 2,
-    title: 'Tarea 2',
-    desc: 'Aprender Node',
-    done: false
-  },
-  {
-    id: 3,
-    title: 'Tarea 3',
-    desc: 'Aprender Tailwind',
-    done: false
-  }
-]
+const initialTodos = JSON.parse(localStorage.getItem('TodoApp'));
 
 export const TodoApp = () => {
 
   const [todos, setTodos] = useState(initialTodos);
+  const [todoEdit, setTodoEdit] = useState(null);
 
   const handleDone = (todoId) => {
 
     const doneTodos = todos.map(todo => (
       todo.id === todoId
-      ? {...todo, done: !todo.done }
-      : todo
+        ? { ...todo, done: !todo.done }
+        : todo
     ));
 
     setTodos(doneTodos);
   }
 
   const handleDelete = (todoId) => {
+    if(todoEdit && todoId === todoEdit.id) {
+      setTodoEdit(null);
+    } 
+
     const deleteTodos = todos.filter(td => td.id !== todoId);
 
     setTodos(deleteTodos);
@@ -46,7 +32,7 @@ export const TodoApp = () => {
 
   const handleAdd = (todo) => {
     console.log(todo);
-    
+
     const newTodo = {
       id: Date.now(),
       ...todo,
@@ -58,8 +44,20 @@ export const TodoApp = () => {
       ...todos
     ]
 
-    setTodos(changedTodos)
+    setTodos(changedTodos);    
   }
+
+  const handleEdit = (todoEdit) => {
+
+    const changeTodo = todos.map(todo => (
+      todo.id === todoEdit.id
+        ? todoEdit
+        : todo
+    ));
+
+    setTodos(changeTodo);
+  }
+  localStorage.setItem('TodoApp', JSON.stringify(todos));
 
   return (
     <div className='m-5'>
@@ -70,8 +68,14 @@ export const TodoApp = () => {
           todos={todos}
           handleDelete={handleDelete}
           handleDone={handleDone}
+          setTodoEdit={setTodoEdit}
         />
-        <TodoAdd handleAdd={handleAdd}/>
+        <TodoAdd
+          handleAdd={handleAdd}
+          todoEdit={todoEdit}          
+          handleEdit={handleEdit}
+          setTodoEdit={setTodoEdit}
+        />
       </div>
     </div>
   )

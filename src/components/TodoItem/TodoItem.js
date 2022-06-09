@@ -1,14 +1,14 @@
 import React from 'react'
 
-export const TodoItem = ({ todo, handleDelete, handleDone }) => {
+export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
 
   const { id, title, desc, done } = todo;
 
   return (
     <>
-      <div className='border-2 border-red-700 rounded p-3 mt-3'>
-        <div className='md:flex justify-end space-x-1.5 mb-3'>
-          <h2 className={`md:text-4xl text-stone-400 ${done && 'line-through'}`}>
+      <div className={`border-2 border-${done ? 'green' : 'stone'}-300 rounded p-3 mt-3`}>
+        <div className='flex md:justify-end sm:justify-center space-x-1.5 mb-3'>
+          <h2 className={`md:text-3xl text-stone-400 ${done && 'line-through'} ${done && 'italic'} overflow-hidden`}>
             {title}
           </h2>
           <button
@@ -19,12 +19,12 @@ export const TodoItem = ({ todo, handleDelete, handleDone }) => {
           </button>
         </div>
 
-        <p className='text-lg text-right text-stone-500'>{desc}</p>
+        <p className='md:text-lg md:text-right text-stone-500'>{desc}</p>
         <hr />
         <div className='flex justify-end space-x-1.5 mt-2'>
           <button
             className='bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded md:w-2/12'
-            onClick={handleDone}
+            onClick={() => setTodoEdit(todo)}
           >
             Edit
           </button>
