@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SearchTodo } from './components/SearchTodo/SearchTodo';
 import { TodoAdd } from './components/TodoAdd/TodoAdd';
 import { TodoList } from './components/TodoList/TodoList';
@@ -10,6 +10,7 @@ export const TodoApp = () => {
   const [todos, setTodos] = useState(initialTodos);
   const [todoEdit, setTodoEdit] = useState(null);
   const [todoSearch, setTodoSearch] = useState(false);
+  const [todoSearchEmpty, setTodoSearchEmpty] = useState(false);
   
   const handleDone = (todoId) => {
 
@@ -64,17 +65,14 @@ export const TodoApp = () => {
   const handleSearch = ( todo ) => {
     const normalizeTodo = todo.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     const filteredTodo = todos.filter( td => td.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(normalizeTodo));
+
+    (filteredTodo.length > 0 ? setTodoSearchEmpty(false) : setTodoSearchEmpty(true));
     setTodos(filteredTodo);    
   }
   
   if(!todoSearch){
     localStorage.setItem('TodoApp', JSON.stringify(todos));    
   } 
-
-  useEffect(() => {
-    console.log('searchTodo', todoSearch);
-  }, [todoSearch])
-  
   
 
   return (
@@ -93,6 +91,8 @@ export const TodoApp = () => {
           handleDelete={handleDelete}
           handleDone={handleDone}
           setTodoEdit={setTodoEdit}
+          todoSearch={todoSearch}          
+          todoSearchEmpty={todoSearchEmpty}
         />
         <TodoAdd
           handleAdd={handleAdd}

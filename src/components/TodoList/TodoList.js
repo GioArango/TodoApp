@@ -1,8 +1,8 @@
 import React from 'react'
 import { TodoItem } from '../TodoItem/TodoItem'
 
-export const TodoList = ({ todos, handleDelete, handleDone, setTodoEdit }) => {
-
+export const TodoList = ({ todos, handleDelete, handleDone, setTodoEdit, todoSearch, todoSearchEmpty }) => {
+  
   return (
     <div>
       {
@@ -14,7 +14,7 @@ export const TodoList = ({ todos, handleDelete, handleDone, setTodoEdit }) => {
         </>
       }
       {
-        todos.length === 0
+        (todos.length === 0 && !todoSearch)
         ?
         (<div className='bg-green-100 text-cyan-900 text-center text-base mt-3 p-2 rounded'>Add your task 😀</div>)
         :
@@ -29,6 +29,11 @@ export const TodoList = ({ todos, handleDelete, handleDone, setTodoEdit }) => {
           />
         ))
         
+      }
+      {
+        (todoSearch && todoSearchEmpty)
+        &&
+        (<div className='bg-red-300 text-red-900 text-center text-base mt-3 p-2 rounded'>Not found ☠️</div>)
       }
 
     </div>

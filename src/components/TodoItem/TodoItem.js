@@ -6,8 +6,6 @@ export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
 
   const deleteTodo = () => {
     handleDelete(id);
-
-    // setTodoSearch(false);
   }
 
   return (
