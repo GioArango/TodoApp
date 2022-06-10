@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchTodo } from './components/SearchTodo/SearchTodo';
 import { TodoAdd } from './components/TodoAdd/TodoAdd';
 import { TodoList } from './components/TodoList/TodoList';
 
-const initialTodos = JSON.parse(localStorage.getItem('TodoApp'));
+const initialTodos = JSON.parse(localStorage.getItem('TodoApp')) || [];
 
 export const TodoApp = () => {
 
@@ -27,11 +27,9 @@ export const TodoApp = () => {
     if(todoEdit && todoId === todoEdit.id) {
       setTodoEdit(null);
     } 
-    const deleteTodos = todos.filter(td => td.id !== todoId);
-    
+    const deleteTodos = todos.filter(td => td.id !== todoId); 
     setTodos(deleteTodos);
-    // setTodoSearch(false);
-    
+    localStorage.setItem('TodoAppDelete', JSON.stringify(todos)); 
   }
 
   const handleAdd = (todo) => {
@@ -66,12 +64,17 @@ export const TodoApp = () => {
   const handleSearch = ( todo ) => {
     const normalizeTodo = todo.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     const filteredTodo = todos.filter( td => td.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(normalizeTodo));
-    setTodos(filteredTodo);
+    setTodos(filteredTodo);    
   }
   
   if(!todoSearch){
     localStorage.setItem('TodoApp', JSON.stringify(todos));    
-  }
+  } 
+
+  useEffect(() => {
+    console.log('searchTodo', todoSearch);
+  }, [todoSearch])
+  
   
 
   return (

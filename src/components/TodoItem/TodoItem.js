@@ -4,6 +4,12 @@ export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
 
   const { id, title, desc, done } = todo;
 
+  const deleteTodo = () => {
+    handleDelete(id);
+
+    // setTodoSearch(false);
+  }
+
   return (
     <>
       <div className={`border-2 border-${done ? 'green' : 'stone'}-300 rounded p-3 mt-3`}>
@@ -30,7 +36,7 @@ export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
           </button>
           <button
             className='bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded md:w-2/12'
-            onClick={() => handleDelete(id)}
+            onClick={deleteTodo}
           >
             Delete
           </button>

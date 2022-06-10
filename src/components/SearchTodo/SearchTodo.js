@@ -9,7 +9,13 @@ export const SearchTodo = ({ handleSearch, setTodos, setTodoSearch }) => {
 
         if (e.target.value.trim()==='') {
             const todosStorage = JSON.parse(localStorage.getItem('TodoApp'));
-            setTodos(todosStorage);
+            const todosStorageBK = JSON.parse(localStorage.getItem('TodoAppDelete'));
+
+            const [{id}] = todosStorageBK;
+
+            const changedTodos = todosStorage.filter(td => td.id !== id);
+
+            setTodos(changedTodos);
             setTodoSearch(false);
         }
     }
