@@ -6,7 +6,7 @@ const newTodo = {
 }
 
 export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
-  // console.log('Add ', todoEdit)
+  
   const [formValues, setFormValues] = useState(newTodo);
   const { title, desc } = formValues;
 
