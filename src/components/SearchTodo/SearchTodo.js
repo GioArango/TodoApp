@@ -7,16 +7,36 @@ export const SearchTodo = ({ handleSearch, setTodos, setTodoSearch }) => {
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
 
-        if (e.target.value.trim()==='') {
+        if (e.target.value.trim() === '') {
+
             const todosStorage = JSON.parse(localStorage.getItem('TodoApp'));
-            const todosStorageBK = JSON.parse(localStorage.getItem('TodoAppDelete'));
+            const todosDeleteStorage = JSON.parse(localStorage.getItem('TodoAppDelete')); //TODO nombre vble
+            const todosEditStorage = JSON.parse(localStorage.getItem('TodoAppEdit'));
 
-            const [{id}] = todosStorageBK;
+            if (todosEditStorage) {
+                const {id} = todosEditStorage;
+                const changeTodo = todosStorage.map(todo => (
+                    todo.id === id
+                        ? todosEditStorage
+                        : todo
+                ));
 
-            const changedTodos = todosStorage.filter(td => td.id !== id);
+                localStorage.setItem('TodoApp', JSON.stringify(changeTodo));
+                localStorage.removeItem('TodoAppEdit');
+            } else {
+                setTodos(todosStorage);
+            }
 
-            setTodos(changedTodos);
+            if (todosDeleteStorage) {
+                const [{ id }] = todosDeleteStorage;
+                const deleteTodo = todosStorage.filter(todo => todo.id !== id);
+                
+                localStorage.setItem('TodoApp', JSON.stringify(deleteTodo));
+                localStorage.removeItem('TodoAppDelete');
+            }
+
             setTodoSearch(false);
+            setTodos(JSON.parse(localStorage.getItem('TodoApp')));
         }
     }
 

@@ -11,26 +11,28 @@ export const TodoApp = () => {
   const [todoEdit, setTodoEdit] = useState(null);
   const [todoSearch, setTodoSearch] = useState(false);
   const [todoSearchEmpty, setTodoSearchEmpty] = useState(false);
-  
-  const handleDone = (todoId) => {
 
+  const handleDone = (todoId) => {
     const doneTodos = todos.map(todo => (
       todo.id === todoId
         ? { ...todo, done: !todo.done }
         : todo
     ));
 
+    localStorage.setItem('TodoAppEdit', JSON.stringify(doneTodos));
     setTodos(doneTodos);
-    
+
   }
 
   const handleDelete = (todoId) => {
-    if(todoEdit && todoId === todoEdit.id) {
+
+    if (todoEdit && todoId === todoEdit.id) {
       setTodoEdit(null);
-    } 
-    const deleteTodos = todos.filter(td => td.id !== todoId); 
+    }
+
+    const deleteTodos = todos.filter(td => td.id !== todoId);
     setTodos(deleteTodos);
-    localStorage.setItem('TodoAppDelete', JSON.stringify(todos)); 
+    localStorage.setItem('TodoAppDelete', JSON.stringify(todos));
   }
 
   const handleAdd = (todo) => {
@@ -47,11 +49,11 @@ export const TodoApp = () => {
     ]
 
     setTodos(changedTodos);
-       
+
   }
 
   const handleEdit = (todoEdit) => {
-
+    localStorage.setItem('TodoAppEdit', JSON.stringify(todoEdit));
     const changeTodo = todos.map(todo => (
       todo.id === todoEdit.id
         ? todoEdit
@@ -59,31 +61,35 @@ export const TodoApp = () => {
     ));
 
     setTodos(changeTodo);
-    
+    // handleSwitch(todoSearch);
   }
 
-  const handleSearch = ( todo ) => {
+  // const handleSwitch = (param) => {
+  //   setTodoSearch(!param);
+  // }
+
+  const handleSearch = (todo) => {
     const normalizeTodo = todo.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-    const filteredTodo = todos.filter( td => td.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(normalizeTodo));
+    const filteredTodo = todos.filter(td => td.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(normalizeTodo));
 
     (filteredTodo.length > 0 ? setTodoSearchEmpty(false) : setTodoSearchEmpty(true));
-    setTodos(filteredTodo);    
+    setTodos(filteredTodo);
   }
-  
-  if(!todoSearch){
-    localStorage.setItem('TodoApp', JSON.stringify(todos));    
-  } 
-  
+
+  if (!todoSearch) {
+    localStorage.setItem('TodoApp', JSON.stringify(todos));
+  }
+
 
   return (
     <div className='m-5'>
       <h1 className='text-4xl font-bold text-center text-green-500 mb-3'>TODO APP</h1>
       <hr />
-      <SearchTodo 
-         handleSearch={handleSearch}
-         setTodos={setTodos}
-         initialTodos={initialTodos}
-         setTodoSearch={setTodoSearch}
+      <SearchTodo
+        handleSearch={handleSearch}
+        setTodos={setTodos}
+        initialTodos={initialTodos}
+        setTodoSearch={setTodoSearch}
       />
       <div className='grid grid-cols-2 gap-5'>
         <TodoList
@@ -91,14 +97,16 @@ export const TodoApp = () => {
           handleDelete={handleDelete}
           handleDone={handleDone}
           setTodoEdit={setTodoEdit}
-          todoSearch={todoSearch}          
+          todoSearch={todoSearch}
           todoSearchEmpty={todoSearchEmpty}
+          setTodoSearch={setTodoSearch}
         />
         <TodoAdd
           handleAdd={handleAdd}
-          todoEdit={todoEdit}          
+          todoEdit={todoEdit}
           handleEdit={handleEdit}
           setTodoEdit={setTodoEdit}
+          todoSearch={todoSearch}
         />
       </div>
     </div>

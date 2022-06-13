@@ -1,13 +1,13 @@
 import React from 'react'
 
-export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
+export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit, setTodoSearch }) => {
 
   const { id, title, desc, done } = todo;
 
   const deleteTodo = () => {
     handleDelete(id);
   }
-
+  
   return (
     <>
       <div className={`border-2 border-${done ? 'green' : 'stone'}-300 rounded p-3 mt-3`}>

@@ -5,8 +5,8 @@ const newTodo = {
   desc: ''
 }
 
-export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
-  
+export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit, todoSearch, setInputSearchValue }) => {
+
   const [formValues, setFormValues] = useState(newTodo);
   const { title, desc } = formValues;
 
@@ -42,10 +42,10 @@ export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
       return;
     }
 
-    if(todoEdit) {
+    if (todoEdit) {
       handleEdit(formValues);
       setTodoEdit(null);
-    }else{
+    } else {
       handleAdd(formValues);
     }
 
@@ -61,36 +61,78 @@ export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
   }
 
   const handleCancel = () => {
+    
+    const todoCancel = {
+      title: todoEdit.title,
+      desc: ''
+    }
+    
     setTodoEdit(null);
-    setFormValues(newTodo);
+    setFormValues(todoCancel);
   }
 
   return (
     <div>
-      <h1 className='text-xl text-stone-600'>
+      <h1 className={
+        todoSearch
+        ?
+        'text-xl text-stone-200'
+        :
+        'text-xl text-stone-600'
+      }>
         {todoEdit ? 'Edit' : 'Add'} Todo
       </h1>
       <hr />
 
       <form onSubmit={handleSubmit} className='mt-2'>
         <div className='col-span-6 sm:col-span-4 verflow-hidden'>
-          <label className='block text-lg text-stone-700'>Task</label>
+          <label className={
+            todoSearch
+            ?
+            'block text-lg text-stone-200'
+            :
+            'block text-lg text-stone-700'
+          }>
+            Task
+          </label>
           <input
+            disabled={(todoSearch && !todoEdit) && 'disabled'}
             type='text'
             name='title'
             autoComplete='off'
-            className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1'
+            className={
+              todoSearch
+                ?
+                'disabled:bg-gray-100 mt-1 px-3 py-2 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-noneblock w-full rounded-md sm:text-sm'
+                :
+                'mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1'
+            }
             onChange={handleInputChange}
             value={title}
           />
         </div>
         <div>
-          <label className='block text-lg text-stone-700'> Description </label>
+          <label className={
+            todoSearch
+            ?
+            'block text-lg text-stone-200'
+            :
+            'block text-lg text-stone-700'
+          }> 
+            Description 
+          </label>
           <div className='mt-1'>
             <textarea
+              disabled={(todoSearch && !todoEdit) && 'disabled'}
               name='desc'
               rows='3'
-              className='mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1'
+              className={
+                todoSearch
+                  ?
+                  'disabled:bg-gray-100 mt-1 px-3 py-2 border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-noneblock w-full rounded-md sm:text-sm'
+                  :
+                  'mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1'
+              }
               placeholder='Type a description'
               onChange={handleInputChange}
               value={desc}
@@ -112,8 +154,15 @@ export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit }) => {
           }
 
           <button
+            disabled={(todoSearch && !todoEdit) && 'disabled'}
             type='submit'
-            className={`bg-${(todoEdit ? 'blue' : 'green')}-500 hover:bg-${(todoEdit ? 'blue' : 'green')}-300 text-white font-bold py-2 px-4 rounded md:w-3/12`}
+            className={
+              (todoSearch && !todoEdit)
+              ?
+              'bg-green-100 text-white font-bold py-2 px-4 rounded md:w-3/12'
+              :
+              `bg-${(todoEdit ? 'blue' : 'green')}-500 hover:bg-${(todoEdit ? 'blue' : 'green')}-300 text-white font-bold py-2 px-4 rounded md:w-3/12`            
+            }
           >
             {todoEdit ? 'Edit' : 'Add'} Task
           </button>
