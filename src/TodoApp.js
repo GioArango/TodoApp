@@ -18,10 +18,11 @@ export const TodoApp = () => {
         ? { ...todo, done: !todo.done }
         : todo
     ));
+    
+    const [doneTodoStorage] = doneTodos;
 
-    localStorage.setItem('TodoAppEdit', JSON.stringify(doneTodos));
+    localStorage.setItem('TodoAppEdit', JSON.stringify(doneTodoStorage));
     setTodos(doneTodos);
-
   }
 
   const handleDelete = (todoId) => {
@@ -61,18 +62,14 @@ export const TodoApp = () => {
     ));
 
     setTodos(changeTodo);
-    // handleSwitch(todoSearch);
+    setTodoEdit(null);
   }
 
-  // const handleSwitch = (param) => {
-  //   setTodoSearch(!param);
-  // }
-
   const handleSearch = (todo) => {
-    const normalizeTodo = todo.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const normalizeTodo = todo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     const filteredTodo = todos.filter(td => td.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").includes(normalizeTodo));
 
-    (filteredTodo.length > 0 ? setTodoSearchEmpty(false) : setTodoSearchEmpty(true));
+    ((filteredTodo.length > 0) ? setTodoSearchEmpty(false) : setTodoSearchEmpty(true));
     setTodos(filteredTodo);
   }
 
@@ -88,7 +85,6 @@ export const TodoApp = () => {
       <SearchTodo
         handleSearch={handleSearch}
         setTodos={setTodos}
-        initialTodos={initialTodos}
         setTodoSearch={setTodoSearch}
       />
       <div className='grid grid-cols-2 gap-5'>

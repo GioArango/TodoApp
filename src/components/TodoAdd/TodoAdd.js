@@ -5,7 +5,7 @@ const newTodo = {
   desc: ''
 }
 
-export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit, todoSearch, setInputSearchValue }) => {
+export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit, todoSearch }) => {
 
   const [formValues, setFormValues] = useState(newTodo);
   const { title, desc } = formValues;
@@ -57,7 +57,6 @@ export const TodoAdd = ({ handleAdd, todoEdit, handleEdit, setTodoEdit, todoSear
     }, 2000);
 
     setError(null);
-
   }
 
   const handleCancel = () => {

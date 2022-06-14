@@ -1,13 +1,9 @@
 import React from 'react'
 
-export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit, setTodoSearch }) => {
+export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
 
   const { id, title, desc, done } = todo;
 
-  const deleteTodo = () => {
-    handleDelete(id);
-  }
-  
   return (
     <>
       <div className={`border-2 border-${done ? 'green' : 'stone'}-300 rounded p-3 mt-3`}>
@@ -34,7 +30,7 @@ export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit, setTodoS
           </button>
           <button
             className='bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded md:w-2/12'
-            onClick={deleteTodo}
+            onClick={() => handleDelete(todo.id)}
           >
             Delete
           </button>
