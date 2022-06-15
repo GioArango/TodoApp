@@ -6,13 +6,13 @@ export const TodoItem = ({ todo, handleDelete, handleDone, setTodoEdit }) => {
 
   return (
     <>
-      <div className={`border-2 border-${done ? 'green' : 'stone'}-300 rounded p-3 mt-3`}>
+      <div className={`border-2 ${done ? 'border-green-300' : 'border-stone-300'} rounded p-3 mt-3`}>
         <div className='flex md:justify-end sm:justify-center space-x-1.5 mb-3'>
           <h2 className={`md:text-3xl text-stone-400 ${done && 'line-through'} ${done && 'italic'} overflow-hidden`}>
             {title}
           </h2>
           <button
-            className={`bg-${done ? 'yellow' : 'green'}-500 hover:bg-${done ? 'yellow' : 'green'}-300 text-white font-bold py-2 px-4 rounded md:w-2/12`}
+            className={`${done ? 'bg-yellow-500' : 'bg-green-500'} hover:${done ? 'bg-yellow-300' : 'bg-green-300'} text-white font-bold py-2 px-4 rounded md:w-2/12`}
             onClick={() => handleDone(id)}
           >
             { done ? 'Todo' : 'Done' }
